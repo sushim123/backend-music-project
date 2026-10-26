@@ -1,16 +1,19 @@
 # Dependencies
 node_modules/
+backend/node_modules/
 /.pnp
 .pnp.js
 
 # Environment Variables & Secrets
 .env
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*.local
 *.env
+backend/.env
+backend/.env.local
+backend/.env.*.local
 !.env.example
+!backend/.env.example
 
 # Logs
 logs
@@ -27,7 +30,7 @@ pids
 *.seed
 *.pid.lock
 
-# Coverage directory used by tools like istanbul
+# Coverage directory
 coverage/
 *.lcov
 
