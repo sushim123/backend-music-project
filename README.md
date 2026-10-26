@@ -350,5 +350,4 @@ A pre-configured Postman collection is included in the project root:
 - **Project Association**: When creating a task, the service verifies that the `projectId` exists in MySQL and belongs to the requesting user.
 - **Resource Not Found**: Invalid IDs or missing records return a clean HTTP 404 response.
 - **Centralized Error Middleware**: Formats all errors into a consistent JSON response with appropriate status codes (400, 401, 403, 404, 409, 500).
-#   b a c k e n d - m u s i c - p r o j e c t  
- 
+# backend-music-project
