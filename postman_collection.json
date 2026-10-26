@@ -1,0 +1,440 @@
+{
+  "info": {
+    "name": "Project & Task Management API",
+    "description": "Complete Postman collection for Choira Backend Developer Assessment",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "projectId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "taskId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
+        }
+      }
+    },
+    {
+      "name": "1. Authentication (MySQL)",
+      "item": [
+        {
+          "name": "POST Register",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.data && jsonData.data.token) {",
+                  "    pm.collectionVariables.set('authToken', jsonData.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "POST Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.data && jsonData.data.token) {",
+                  "    pm.collectionVariables.set('authToken', jsonData.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "GET Current User Profile (/me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "me"]
+            }
+          }
+        },
+        {
+          "name": "PUT Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Updated Doe\",\n  \"email\": \"john.updated@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "profile"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Project Management (MySQL)",
+      "item": [
+        {
+          "name": "POST Create Project",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.data && jsonData.data.project && jsonData.data.project.id) {",
+                  "    pm.collectionVariables.set('projectId', jsonData.data.project.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Choira Music Studio Web App\",\n  \"description\": \"Comprehensive music production and task management portal\",\n  \"status\": \"active\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/projects",
+              "host": ["{{baseUrl}}"],
+              "path": ["projects"]
+            }
+          }
+        },
+        {
+          "name": "GET All Projects",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/projects",
+              "host": ["{{baseUrl}}"],
+              "path": ["projects"]
+            }
+          }
+        },
+        {
+          "name": "GET Project By ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/projects/{{projectId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["projects", "{{projectId}}"]
+            }
+          }
+        },
+        {
+          "name": "PUT Update Project",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Choira Music Studio v2\",\n  \"description\": \"Updated description with milestone goals\",\n  \"status\": \"active\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/projects/{{projectId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["projects", "{{projectId}}"]
+            }
+          }
+        },
+        {
+          "name": "DELETE Project",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/projects/{{projectId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["projects", "{{projectId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Task Management (MongoDB)",
+      "item": [
+        {
+          "name": "POST Create Task",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.data && jsonData.data.task && jsonData.data.task._id) {",
+                  "    pm.collectionVariables.set('taskId', jsonData.data.task._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Implement JWT Authentication\",\n  \"description\": \"Setup bcrypt and jsonwebtoken with auth middleware\",\n  \"status\": \"todo\",\n  \"priority\": \"high\",\n  \"projectId\": {{projectId}},\n  \"dueDate\": \"2026-11-01T12:00:00.000Z\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/tasks",
+              "host": ["{{baseUrl}}"],
+              "path": ["tasks"]
+            }
+          }
+        },
+        {
+          "name": "GET All Tasks (With Pagination & Filters)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/tasks?page=1&limit=10&status=todo&priority=high",
+              "host": ["{{baseUrl}}"],
+              "path": ["tasks"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "status",
+                  "value": "todo"
+                },
+                {
+                  "key": "priority",
+                  "value": "high"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Task By ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/tasks/{{taskId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["tasks", "{{taskId}}"]
+            }
+          }
+        },
+        {
+          "name": "PUT Update Task",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"in_progress\",\n  \"priority\": \"high\",\n  \"description\": \"In active development with unit tests\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/tasks/{{taskId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["tasks", "{{taskId}}"]
+            }
+          }
+        },
+        {
+          "name": "DELETE Task",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/tasks/{{taskId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["tasks", "{{taskId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Dashboard API",
+      "item": [
+        {
+          "name": "GET Dashboard Statistics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/dashboard",
+              "host": ["{{baseUrl}}"],
+              "path": ["dashboard"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
